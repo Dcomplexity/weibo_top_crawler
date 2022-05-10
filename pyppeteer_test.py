@@ -13,3 +13,4 @@ async def main():
     await browser.close()
 
 asyncio.get_event_loop().run_until_complete(main())
+
