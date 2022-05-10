@@ -5,10 +5,10 @@ from pyquery import PyQuery as pq
 async def main():
     browser = await launch()
     page = await browser.newPage()
-    await page.goto('https://spa2.scrape.center/')
-    await page.waitForSelector('.item .name')
+    await page.goto('https://s.weibo.com/top/summary?cate=realtimehot')
+    await page.waitForSelector('.data')
     doc = pq(await page.content())
-    names = [item.text() for item in doc('.item .name').items()]
+    names = [item.text() for item in doc('.td-02').items()]
     print('Names: ', names)
     await browser.close()
 
