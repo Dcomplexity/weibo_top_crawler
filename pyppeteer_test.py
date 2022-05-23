@@ -8,7 +8,10 @@ async def main():
     await page.goto('https://s.weibo.com/top/summary?cate=realtimehot')
     await page.waitForSelector('.data')
     doc = pq(await page.content())
-    names = [item.text() for item in doc('.td-02').items()]
+    names = [item.text() for item in doc('.td-01').items()]
+    for key in names:
+        if key != '':
+            print(key)
     print('Names: ', names)
     await browser.close()
 
