@@ -4,6 +4,8 @@ from pyquery import PyQuery as pq
 import datetime
 
 async def weibo_top_crawler():
+    print("craw data")
+
     browser = await launch()
     page = await browser.newPage()
     tonow = datetime.datetime.now().replace(microsecond=0)
@@ -29,7 +31,18 @@ async def weibo_top_crawler():
             item.insert(0, '') 
     top_remark = [item.text() for item in doc('.td-03').items()]
     await browser.close()
-    return now_date, now_time, total_num, top_rank, keywords, cate_index, top_remark
+    records = manage_data(total_num, top_rank, keywords, cate_index, top_remark)
+    data_len = len(records)
+    global data_class
+    global engine
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+    for i in range(data_len):
+        data_inst = data_class(top_date=now_date, top_time=now_time, top_rank=records[i][0], keywords=records[i][1], category=records[i][2], top_index=records[i][3], top_remark=records[i][4])
+        session.add(data_inst)
+    session.commit()
+    session.close()
+    # return now_date, now_time, total_num, top_rank, keywords, cate_index, top_remark
 
 
 def manage_data(total_num, top_rank, keywords, cate_index, top_remark):
@@ -42,8 +55,10 @@ def manage_data(total_num, top_rank, keywords, cate_index, top_remark):
         records[i].append(top_remark[i])
     return records
 
+
 if __name__ == "__main__":
     now_date, now_time, total_num, top_rank, keywords, cate_index, top_remark = asyncio.get_event_loop().run_until_complete(weibo_top_crawler())
+    # now_date, now_time, total_num, top_rank, keywords, cate_index, top_remark = weibo_top_crawler()
     records = manage_data(total_num, top_rank, keywords, cate_index, top_remark)
     print(records)
     print(now_date, now_time)
