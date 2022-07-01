@@ -10,8 +10,11 @@ def job_1():
 def job_2():
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " Hello")
 
-async def tick():
+async def tick_1():
     print("Tick! The time is %s" %datetime.now())
+
+async def tick_2():
+    print("Hello you, Notice the time is %s" %datetime.now())
 
 # BlockingScheduler
 
@@ -22,7 +25,8 @@ async def tick():
 
 if __name__ == '__main__':
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(tick, 'interval', seconds=3)
+    scheduler.add_job(tick_1, 'interval', seconds=3)
+    scheduler.add_job(tick_2, 'interval', seconds=5)
     scheduler.start()
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
 

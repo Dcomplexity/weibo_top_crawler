@@ -4,7 +4,7 @@ from pyquery import PyQuery as pq
 import datetime
 
 async def weibo_top_crawler():
-    print("craw data")
+    # print("craw data")
 
     browser = await launch()
     page = await browser.newPage()
