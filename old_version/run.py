@@ -44,7 +44,7 @@ if __name__ == "__main__":
     print(base)
     base.metadata.reflect(engine)
     tables = base.metadata.tables
-    print(tables)
+    base.metadata.drop_all(engine, [tables['weibo_top_2022']], checkfirst=True)
     # table_name = "weibo_top_2022_6"
     # data_class = ""
 
